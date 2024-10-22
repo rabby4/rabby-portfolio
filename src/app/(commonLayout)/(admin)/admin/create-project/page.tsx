@@ -1,67 +1,77 @@
 "use client"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
 import {
 	Controller,
 	FieldValues,
 	SubmitHandler,
 	useForm,
 } from "react-hook-form"
-import { useLogin } from "@/hooks/auth.hooks"
-import { useRouter } from "next/navigation"
-import LabelInputContainer from "@/components/form/LabelInputContainer"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import BottomGradient from "@/components/form/BottomGradient"
+import LabelInputContainer from "@/components/form/LabelInputContainer"
+import { Textarea } from "@/components/ui/textarea"
+import { useCreateBlog } from "@/hooks/blog.hook"
 
-export default function LoginPage() {
+const CreateProject = () => {
 	const { control, handleSubmit } = useForm({})
-	const { mutate: handleLogin, isPending, isSuccess } = useLogin()
-	const router = useRouter()
+	const { mutate: handleCreateBlog } = useCreateBlog()
 
 	const onSubmit: SubmitHandler<FieldValues> = async (data) => {
 		console.log(data)
-		await handleLogin(data)
-	}
-
-	if (!isPending && isSuccess) {
-		router.push("/")
+		handleCreateBlog(data)
 	}
 
 	return (
-		<div className="flex justify-center items-center h-screen w-full">
-			<div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+		<div className="flex justify-center items-center h-screen w-full p-20">
+			<div className="w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
 				<h2 className="font-bold text-2xl text-neutral-800 dark:text-neutral-200">
-					Login
+					Create A Project
 				</h2>
 				<p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-					Insert your credentials and login to your portfolio website
+					Create a blog and get more traffic on your portfolio website.
 				</p>
 
 				<form className="my-8" onSubmit={handleSubmit(onSubmit)}>
 					<LabelInputContainer className="mb-4">
-						<Label htmlFor="email">Email Address</Label>
+						<Label htmlFor="title">Email Address</Label>
 						<Controller
-							name="email"
+							name="title"
 							control={control}
 							render={({ field }) => (
 								<Input
-									id="email"
-									placeholder="example@gmail.com"
-									type="email"
+									id="title"
+									placeholder="Blog title..."
+									type="text"
 									{...field}
 								/>
 							)}
 						/>
 					</LabelInputContainer>
 					<LabelInputContainer className="mb-4">
-						<Label htmlFor="password">Password</Label>
+						<Label htmlFor="technologies">Feature Image</Label>
 						<Controller
-							name="password"
+							name="technologies"
 							control={control}
 							render={({ field }) => (
 								<Input
-									id="password"
-									placeholder="••••••••"
-									type="password"
+									id="technologies"
+									placeholder="Add your project technologies"
+									type="text"
+									{...field}
+								/>
+							)}
+						/>
+					</LabelInputContainer>
+					<LabelInputContainer className="mb-4">
+						<Label htmlFor="description">Description</Label>
+						<Controller
+							name="description"
+							control={control}
+							render={({ field }) => (
+								<Textarea
+									id="description"
+									placeholder="Write you blog content"
+									rows={8}
 									{...field}
 								/>
 							)}
@@ -80,3 +90,5 @@ export default function LoginPage() {
 		</div>
 	)
 }
+
+export default CreateProject

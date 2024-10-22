@@ -23,7 +23,7 @@ export default function LoginPage() {
 	}
 
 	if (!isPending && isSuccess) {
-		router.push("/")
+		router.push("/admin")
 	}
 
 	return (
